@@ -20,8 +20,12 @@ const jobSlice = createSlice({
       // updating all jobs found array
       state.allJobs.push(...action.payload.fetchedJobs);
     },
+    updateSearchFilter: (state, action) => {
+      console.log(action.payload);
+      state.filtersSet = action.payload;
+    },
   },
 });
 
-export const { updateAllJobs } = jobSlice.actions;
+export const { updateAllJobs, updateSearchFilter } = jobSlice.actions;
 export default jobSlice.reducer;
