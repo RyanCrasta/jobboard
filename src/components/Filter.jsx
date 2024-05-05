@@ -7,6 +7,7 @@ import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
 
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
+import useFilter from "../utils/useFilter";
 
 import styles from "../styles/Filter.module.css";
 
@@ -28,57 +29,59 @@ const Filter = () => {
 
   console.log("aaaaaaaaaaaaaa", allFiltersState);
 
-  useEffect(() => {
-    let updateFilterArrayResult = allJobs;
-    console.log("updateFilterArrayResult", updateFilterArrayResult);
+  // useEffect(() => {
+  // let updateFilterArrayResult = allJobs;
+  // console.log("updateFilterArrayResult", updateFilterArrayResult);
 
-    // role filter
-    if (allFiltersState.role) {
-      const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.jobRole === allFiltersState.role) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+  // // role filter
+  // if (allFiltersState.role) {
+  //   const res = updateFilterArrayResult.filter((jobItem) => {
+  //     if (jobItem.jobRole === allFiltersState.role) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
 
-      console.log("FFFFFFFFFFFFFFFFFFF", res);
-      updateFilterArrayResult = res;
-    }
+  //   console.log("FFFFFFFFFFFFFFFFFFF", res);
+  //   updateFilterArrayResult = res;
+  // }
 
-    // remote filter
-    if (allFiltersState.remote) {
-      const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.location === allFiltersState.remote) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      console.log("SSSSSSSSSSSSSSS", res);
-      updateFilterArrayResult = res;
-    }
+  // // remote filter
+  // if (allFiltersState.remote) {
+  //   const res = updateFilterArrayResult.filter((jobItem) => {
+  //     if (jobItem.location === allFiltersState.remote) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   console.log("SSSSSSSSSSSSSSS", res);
+  //   updateFilterArrayResult = res;
+  // }
 
-    // min exp filter
-    if (allFiltersState.minExp) {
-      console.log("+allFiltersState.minExp", +allFiltersState.minExp);
-      const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.minExp && jobItem.minExp === +allFiltersState.minExp) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      console.log("TTTTTTTTTTTTTTTT", res);
-      updateFilterArrayResult = res;
-    }
+  // // min exp filter
+  // if (allFiltersState.minExp) {
+  //   console.log("+allFiltersState.minExp", +allFiltersState.minExp);
+  //   const res = updateFilterArrayResult.filter((jobItem) => {
+  //     if (jobItem.minExp && jobItem.minExp === +allFiltersState.minExp) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   console.log("TTTTTTTTTTTTTTTT", res);
+  //   updateFilterArrayResult = res;
+  // }
 
-    dispatch(
-      updateFilteredJobs({
-        updateFilterArrayResult,
-      })
-    );
-  }, [allFiltersState]);
+  // dispatch(
+  //   updateFilteredJobs({
+  //     updateFilterArrayResult,
+  //   })
+  // );
+
+  useFilter(true, "filterComponent");
+  // }, [allFiltersState]);
 
   const handleFilter = () => {
     console.log("allJobs", allJobs);
