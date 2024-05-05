@@ -6,14 +6,40 @@
   background-color: red !important;
 }
 
+.Typography {
+  padding: 0.5rem 0;
+}
+
+.Card {
+  margin: 5rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 3px 0px !important;
+}
+
+.Link {
+  background-color: rgb(85, 239, 196);
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 1rem 0;
+  border-radius: 0.5rem;
+}
+
 @media screen and (max-width: 1500px) {
   .jobCardContainer {
     width: 45%;
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
   .jobCardContainer {
     width: 80%;
+  }
+}
+
+@media screen and (max-width: 995px) {
+  .Card {
+    margin: 1rem;
   }
 }
