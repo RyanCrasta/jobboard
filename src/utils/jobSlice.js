@@ -24,8 +24,13 @@ const jobSlice = createSlice({
       console.log(action.payload);
       state.filtersSet = action.payload;
     },
+    updateFilteredJobs: (state, action) => {
+      console.log("updateFilteredJobs", action.payload);
+      state.filteredJobs = action.payload.updateFilterArrayResult;
+    },
   },
 });
 
-export const { updateAllJobs, updateSearchFilter } = jobSlice.actions;
+export const { updateAllJobs, updateSearchFilter, updateFilteredJobs } =
+  jobSlice.actions;
 export default jobSlice.reducer;

@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSearchFilter } from "../utils/jobSlice";
+import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
 
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
@@ -18,7 +18,7 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const allFiltersState = useSelector((allfilters) => {
-    // console.log(allfilters.job.filtersSet);
+    console.log("allfilters.job.filtersSet", allfilters.job.filtersSet);
     return allfilters.job.filtersSet;
   });
 
@@ -29,7 +29,6 @@ const Filter = () => {
   console.log("aaaaaaaaaaaaaa", allFiltersState);
 
   useEffect(() => {
-    console.log("sexy sexy", allFiltersState);
     let updateFilterArrayResult = allJobs;
     console.log("updateFilterArrayResult", updateFilterArrayResult);
 
@@ -73,6 +72,12 @@ const Filter = () => {
       console.log("TTTTTTTTTTTTTTTT", res);
       updateFilterArrayResult = res;
     }
+
+    dispatch(
+      updateFilteredJobs({
+        updateFilterArrayResult,
+      })
+    );
   }, [allFiltersState]);
 
   const handleFilter = () => {
@@ -182,8 +187,6 @@ const Filter = () => {
           </Select>
         </FormControl>
       </Box>
-
-      <button onClick={() => setCounter(counter + 1)}>click me</button>
     </div>
   );
 };
