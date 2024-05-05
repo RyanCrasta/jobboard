@@ -61,6 +61,7 @@ const JobsSection = () => {
   });
 
   const handleScroll = () => {
+    console.log("handleScrollhandleScroll");
     // to know when scroll has reached bottom of page
     if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
       setLoading(true);
@@ -72,19 +73,19 @@ const JobsSection = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("wheel", handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("wheel", handleScroll);
   }, []);
 
   const isFilteredApplied = () => {
     if (
       !allFiltersState.companyName &&
       !allFiltersState.location &&
-      !allFiltersState.minBasePay &&
-      !allFiltersState.minExp &&
-      !allFiltersState.remote &&
-      !allFiltersState.role &&
+      !allFiltersState.minBasePay.length > 0 &&
+      !allFiltersState.minExp.length > 0 &&
+      !allFiltersState.remote.length > 0 &&
+      !allFiltersState.role.length > 0 &&
       !allFiltersState.techStack
     ) {
       return true;

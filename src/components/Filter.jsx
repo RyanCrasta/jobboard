@@ -5,6 +5,8 @@ import InputLabel from "@mui/material/InputLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
 import TextField from "@mui/material/TextField";
+import { Autocomplete } from "@mui/material";
+// import CheckIcon from "@mui/icons-material/Check";
 
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
@@ -22,119 +24,136 @@ const Filter = () => {
 
   const [jobMinBaseSalaryFilter, setJobMinBaseSalaryFilter] = useState("");
 
+  const [selectedJobRoles, setSelectedJobRoles] = useState([]);
+  const [selectedJobPlaces, setSelectedJobPlaces] = useState([]);
+  const [selectedJobExp, setSelectedJobExp] = useState([]);
+  const [selectedJobBaseMinSalary, setSelectedJobBaseMinSalary] = useState([]);
+
+  const names = [
+    {
+      value: "frontend",
+      name: "Frontend",
+    },
+    {
+      value: "ios",
+      name: "IOS",
+    },
+    {
+      value: "backend",
+      name: "Backend",
+    },
+    {
+      value: "tech lead",
+      name: "tech lead",
+    },
+    {
+      value: "android",
+      name: "Android",
+    },
+  ];
+
+  const placeOfWork = [
+    {
+      value: "remote",
+      name: "Remote",
+    },
+    {
+      value: "inoffice",
+      name: "In Office",
+    },
+  ];
+
+  const exp = [
+    {
+      value: "1",
+      name: "1",
+    },
+    {
+      value: "2",
+      name: "2",
+    },
+    {
+      value: "3",
+      name: "3",
+    },
+    {
+      value: "4",
+      name: "4",
+    },
+
+    {
+      value: "5",
+      name: "5",
+    },
+    {
+      value: "6",
+      name: "6",
+    },
+    {
+      value: "7",
+      name: "7",
+    },
+    {
+      value: "8",
+      name: "8",
+    },
+    {
+      value: "9",
+      name: "9",
+    },
+    {
+      value: "10",
+      name: "10",
+    },
+  ];
+
+  const baseMinSalary = [
+    {
+      value: "0L",
+      name: "0L",
+    },
+    {
+      value: "10L",
+      name: "10L",
+    },
+    {
+      value: "20L",
+      name: "20L",
+    },
+    {
+      value: "30L",
+      name: "30L",
+    },
+    {
+      value: "40L",
+      name: "40L",
+    },
+    {
+      value: "50L",
+      name: "50L",
+    },
+    {
+      value: "60L",
+      name: "60L",
+    },
+    {
+      value: "70L",
+      name: "70L",
+    },
+  ];
+
+  const [stateName, setStateName] = useState(names);
+  const [statePlaceOfWork, setPlaceOfWork] = useState(placeOfWork);
+  const [stateExp, setStateExp] = useState(exp);
+  const [stateBaseMinSalary, setStateBaseMinSalary] = useState(baseMinSalary);
+
   const dispatch = useDispatch();
 
   const allFiltersState = useSelector((allfilters) => {
-    console.log("allfilters.job.filtersSet", allfilters.job.filtersSet);
     return allfilters.job.filtersSet;
   });
 
-  const allJobs = useSelector((jobs) => {
-    return jobs.job.allJobs;
-  });
-
-  console.log("aaaaaaaaaaaaaa", allFiltersState);
-
-  // useEffect(() => {
-  // let updateFilterArrayResult = allJobs;
-  // console.log("updateFilterArrayResult", updateFilterArrayResult);
-
-  // // role filter
-  // if (allFiltersState.role) {
-  //   const res = updateFilterArrayResult.filter((jobItem) => {
-  //     if (jobItem.jobRole === allFiltersState.role) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-
-  //   console.log("FFFFFFFFFFFFFFFFFFF", res);
-  //   updateFilterArrayResult = res;
-  // }
-
-  // // remote filter
-  // if (allFiltersState.remote) {
-  //   const res = updateFilterArrayResult.filter((jobItem) => {
-  //     if (jobItem.location === allFiltersState.remote) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  //   console.log("SSSSSSSSSSSSSSS", res);
-  //   updateFilterArrayResult = res;
-  // }
-
-  // // min exp filter
-  // if (allFiltersState.minExp) {
-  //   console.log("+allFiltersState.minExp", +allFiltersState.minExp);
-  //   const res = updateFilterArrayResult.filter((jobItem) => {
-  //     if (jobItem.minExp && jobItem.minExp === +allFiltersState.minExp) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  //   console.log("TTTTTTTTTTTTTTTT", res);
-  //   updateFilterArrayResult = res;
-  // }
-
-  // dispatch(
-  //   updateFilteredJobs({
-  //     updateFilterArrayResult,
-  //   })
-  // );
-
   useFilter(true, "filterComponent");
-  // }, [allFiltersState]);
-
-  const handleFilter = () => {
-    console.log("allJobs", allJobs);
-  };
-
-  const handleJobRoleChange = (event) => {
-    console.log("handleJobRoleChange", event.target.value);
-    setJobRoleFilter(event.target.value);
-    dispatch(
-      updateSearchFilter({
-        ...allFiltersState,
-        role: event.target.value ? event.target.value : false,
-      })
-    );
-
-    handleFilter({
-      role: event.target.value ? event.target.value : false,
-    });
-  };
-
-  const handleJobRemoteChange = (event) => {
-    console.log("handleJobRemoteChange", event.target.value);
-    setJobRemoteFilter(event.target.value);
-    dispatch(
-      updateSearchFilter({
-        ...allFiltersState,
-        remote: event.target.value ? event.target.value : false,
-      })
-    );
-    handleFilter({
-      remote: event.target.value ? event.target.value : false,
-    });
-  };
-
-  const handleJobMinExpChange = (event) => {
-    console.log("handleJobRemoteChange", event.target.value);
-    setJobMinExpFilter(event.target.value);
-    dispatch(
-      updateSearchFilter({
-        ...allFiltersState,
-        minExp: event.target.value ? event.target.value : false,
-      })
-    );
-    handleFilter({
-      minExp: event.target.value ? event.target.value : false,
-    });
-  };
 
   const handleJobLocationChange = (event) => {
     console.log("handleJobLocationChange", event.target.value);
@@ -150,7 +169,7 @@ const Filter = () => {
     );
   };
 
-  const handleCompanyNameChange = () => {
+  const handleCompanyNameChange = (event) => {
     console.log("handleCompanyNameChange", event.target.value);
     setCompanyNameFilter(event.target.value);
     dispatch(
@@ -164,100 +183,190 @@ const Filter = () => {
     );
   };
 
-  const handleJobMinBaseSalaryChange = (event) => {
-    console.log("handleJobMinBaseSalaryChange", event.target.value);
-    setJobMinBaseSalaryFilter(event.target.value);
+  const handleMultipleJobRole = (event, valueArray) => {
+    if (valueArray.length > 0) {
+      const newSelectedValues = [];
+
+      valueArray.map((item) => {
+        newSelectedValues.push(item.value);
+      });
+      setSelectedJobRoles([...newSelectedValues]);
+    } else {
+      setSelectedJobRoles([]);
+    }
+  };
+
+  const handleMultipleJobPlace = (event, valueArray) => {
+    if (valueArray.length > 0) {
+      const newSelectedValues = [];
+
+      valueArray.map((item) => {
+        newSelectedValues.push(item.value);
+      });
+      setSelectedJobPlaces([...newSelectedValues]);
+    } else {
+      setSelectedJobPlaces([]);
+    }
+  };
+
+  const handleMultipleJobExp = (event, valueArray) => {
+    console.log("handleMultipleJobExp", valueArray);
+    if (valueArray && valueArray.value) {
+      const newSelectedValues = [];
+
+      newSelectedValues.push(valueArray.value);
+      setSelectedJobExp([...newSelectedValues]);
+    } else {
+      setSelectedJobExp([]);
+    }
+  };
+
+  const handleMultipleJobBaseMinSalary = (event, valueArray) => {
+    console.log("handleMultipleJobExp", valueArray);
+    if (valueArray && valueArray.value) {
+      const newSelectedValues = [];
+
+      newSelectedValues.push(valueArray.value);
+      setSelectedJobBaseMinSalary([...newSelectedValues]);
+    } else {
+      setSelectedJobBaseMinSalary([]);
+    }
+  };
+
+  useEffect(() => {
     dispatch(
       updateSearchFilter({
         ...allFiltersState,
-        minBasePay: event.target.value
-          ? event.target.value.split("L")[0]
-          : false,
+        role: selectedJobRoles,
       })
     );
-  };
+  }, [selectedJobRoles]);
+
+  useEffect(() => {
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        remote: selectedJobPlaces,
+      })
+    );
+  }, [selectedJobPlaces]);
+
+  useEffect(() => {
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        minExp: selectedJobExp,
+      })
+    );
+  }, [selectedJobExp]);
+
+  useEffect(() => {
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        minBasePay: selectedJobBaseMinSalary,
+      })
+    );
+  }, [selectedJobBaseMinSalary]);
 
   return (
     <div>
       <Box className={styles["Box"]}>
-        <FormControl fullWidth>
-          <InputLabel id="rolefilter">Roles</InputLabel>
-          <Select
-            labelId="rolefilter"
-            value={jobRoleFilter}
-            onChange={handleJobRoleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="frontend">Frontend</MenuItem>
-            <MenuItem value="ios">IOS</MenuItem>
-            <MenuItem value="android">Android</MenuItem>
-            <MenuItem value="tech lead">Tech lead</MenuItem>
-            <MenuItem value="backend">Backend</MenuItem>
-          </Select>
+        <FormControl className={styles["FormControl"]} fullWidth>
+          <Autocomplete
+            multiple
+            options={statePlaceOfWork}
+            getOptionLabel={(option) => option.name}
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Remote/OnSite"
+                sx={{
+                  "& .MuiChip-root": {
+                    borderRadius: 0,
+                  },
+                }}
+              />
+            )}
+            onChange={handleMultipleJobPlace}
+            renderOption={(props, option, { selected }) => (
+              <MenuItem
+                {...props}
+                key={option.name}
+                value={option.value}
+                sx={{ justifyContent: "space-between" }}
+              >
+                {option.name}
+              </MenuItem>
+            )}
+          />
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel id="remotefilter">Remote/OnSite</InputLabel>
-          <Select
-            labelId="remotefilter"
-            value={jobRemoteFilter}
-            onChange={handleJobRemoteChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="remote">Remote</MenuItem>
-            <MenuItem value="inoffice">In Office</MenuItem>
-          </Select>
+        <FormControl className={styles["FormControl"]} fullWidth>
+          <Autocomplete
+            options={stateExp}
+            getOptionLabel={(option) => option.name}
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Min Experience"
+                sx={{
+                  "& .MuiChip-root": {
+                    borderRadius: 0,
+                  },
+                }}
+              />
+            )}
+            onChange={handleMultipleJobExp}
+            renderOption={(props, option, { selected }) => (
+              <MenuItem
+                {...props}
+                key={option.name}
+                value={option.value}
+                sx={{ justifyContent: "space-between" }}
+              >
+                {option.name}
+              </MenuItem>
+            )}
+          />
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel id="minexpfilter">Min experience</InputLabel>
-          <Select
-            labelId="minexpfilter"
-            value={jobMinExpFilter}
-            onChange={handleJobMinExpChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="1">1</MenuItem>
-            <MenuItem value="2">2</MenuItem>
-            <MenuItem value="3">3</MenuItem>
-            <MenuItem value="4">4</MenuItem>
-            <MenuItem value="5">5</MenuItem>
-            <MenuItem value="6">6</MenuItem>
-            <MenuItem value="7">7</MenuItem>
-            <MenuItem value="8">8</MenuItem>
-            <MenuItem value="9">9</MenuItem>
-            <MenuItem value="10">10</MenuItem>
-          </Select>
+        <FormControl className={styles["FormControl"]} fullWidth>
+          <Autocomplete
+            options={stateBaseMinSalary}
+            getOptionLabel={(option) => option.name}
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Min Base Salary"
+                sx={{
+                  "& .MuiChip-root": {
+                    borderRadius: 0,
+                  },
+                }}
+              />
+            )}
+            onChange={handleMultipleJobBaseMinSalary}
+            renderOption={(props, option, { selected }) => (
+              <MenuItem
+                {...props}
+                key={option.name}
+                value={option.value}
+                sx={{ justifyContent: "space-between" }}
+              >
+                {option.name}
+              </MenuItem>
+            )}
+          />
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel id="minbasesalary">Min Base salary</InputLabel>
-          <Select
-            labelId="minbasesalary"
-            value={jobMinBaseSalaryFilter}
-            onChange={handleJobMinBaseSalaryChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="0L">0L</MenuItem>
-            <MenuItem value="10L">10L</MenuItem>
-            <MenuItem value="20L">20L</MenuItem>
-            <MenuItem value="30L">30L</MenuItem>
-            <MenuItem value="40L">40L</MenuItem>
-            <MenuItem value="50L">50L</MenuItem>
-            <MenuItem value="60L">60L</MenuItem>
-            <MenuItem value="70L">70L</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth>
+        <FormControl className={styles["FormControl"]} fullWidth>
           <TextField
             label="Location"
             onChange={handleJobLocationChange}
@@ -265,11 +374,43 @@ const Filter = () => {
           />
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl className={styles["FormControl"]} fullWidth>
           <TextField
             label="Company Name"
             onChange={handleCompanyNameChange}
             value={companyNameFilter}
+          />
+        </FormControl>
+
+        <FormControl className={styles["FormControl"]} fullWidth>
+          <Autocomplete
+            multiple
+            options={stateName}
+            getOptionLabel={(option) => option.name}
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Job roles"
+                sx={{
+                  "& .MuiChip-root": {
+                    borderRadius: 0,
+                  },
+                }}
+              />
+            )}
+            onChange={handleMultipleJobRole}
+            renderOption={(props, option, { selected }) => (
+              <MenuItem
+                {...props}
+                key={option.name}
+                value={option.value}
+                sx={{ justifyContent: "space-between" }}
+              >
+                {option.name}
+              </MenuItem>
+            )}
           />
         </FormControl>
       </Box>

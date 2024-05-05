@@ -10,60 +10,69 @@ const useFilter = (isFilterApplied, component) => {
   });
 
   const allFiltersState = useSelector((allfilters) => {
-    console.log(allfilters.job.filtersSet);
     return allfilters.job.filtersSet;
   });
 
   const commonCode = () => {
     let updateFilterArrayResult = allJobs;
-
     // role filter
-    if (allFiltersState.role) {
+    if (allFiltersState.role.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.jobRole === allFiltersState.role) {
-          return true;
-        } else {
-          return false;
-        }
+        return allFiltersState.role.some((ele) => {
+          if (jobItem.jobRole === ele) {
+            return true;
+          } else {
+            return false;
+          }
+        });
       });
 
       updateFilterArrayResult = res;
     }
 
     // remote filter
-    if (allFiltersState.remote) {
+    if (allFiltersState.remote.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.location === allFiltersState.remote) {
-          return true;
-        } else if (
-          allFiltersState.remote === "inoffice" &&
-          jobItem.location &&
-          jobItem.location !== "remote"
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+        return allFiltersState.remote.some((ele) => {
+          if (jobItem.location === ele) {
+            return true;
+          } else if (
+            ele === "inoffice" &&
+            jobItem.location &&
+            jobItem.location !== "remote"
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
       });
       updateFilterArrayResult = res;
     }
 
     // min exp filter
-    if (allFiltersState.minExp) {
-      console.log("+allFiltersState.minExp", +allFiltersState.minExp);
+    if (allFiltersState.minExp.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
-        if (jobItem.minExp && jobItem.minExp <= +allFiltersState.minExp) {
-          return true;
-        } else {
-          return false;
-        }
+        return allFiltersState.minExp.some((exp) => {
+          if (
+            jobItem.minExp &&
+            jobItem.minExp <= +exp &&
+            jobItem.maxExp &&
+            jobItem.maxExp >= +exp
+          ) {
+            // eg if from dropdown min exp = 3 then I would also show job posting that has exp
+            // requirement from 1-5, since candidate would be eligible for that job opening
+            return true;
+          } else {
+            return false;
+          }
+        });
       });
       updateFilterArrayResult = res;
     }
 
     // location filter
     if (allFiltersState.location) {
-      console.log("allFiltersState.location", allFiltersState.location);
       const res = updateFilterArrayResult.filter((jobItem) => {
         if (
           jobItem.location
@@ -79,7 +88,6 @@ const useFilter = (isFilterApplied, component) => {
 
     // company name filter
     if (allFiltersState.companyName) {
-      console.log("allFiltersState.companyName", allFiltersState.companyName);
       const res = updateFilterArrayResult.filter((jobItem) => {
         if (
           jobItem.companyName
@@ -94,17 +102,18 @@ const useFilter = (isFilterApplied, component) => {
     }
 
     // minimum base pay filter
-    if (allFiltersState.minBasePay) {
-      console.log("allFiltersState.minBasePay", +allFiltersState.minBasePay);
+    if (allFiltersState.minBasePay.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
-        if (
-          jobItem.minJdSalary &&
-          jobItem.minJdSalary >= +allFiltersState.minBasePay
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+        return allFiltersState.minBasePay.some((minBaseSalary) => {
+          if (
+            jobItem.minJdSalary &&
+            jobItem.minJdSalary >= +minBaseSalary.split("L")[0]
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
       });
       updateFilterArrayResult = res;
     }

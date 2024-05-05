@@ -2,4 +2,23 @@
   display: flex;
   margin: 1rem;
   gap: 2rem;
+  justify-content: center;
+}
+
+.FormControl {
+  min-width: 11.25rem !important;
+  max-width: max-content;
+}
+
+.MuiChip-root {
+  border-radius: 10 !important;
+}
+
+@media screen and (max-width: 1371px) {
+  .Box {
+    flex-wrap: wrap;
+  }
+  .FormControl {
+    max-width: 30rem;
+  }
 }

@@ -89,6 +89,8 @@ const JobCard = ({ jobDetail }) => {
             )}
           </CardContent>
 
+          <p>{jobDetail.minJdSalary}</p>
+
           <CardActions>
             <Link className={styles["Link"]}>Easy Apply</Link>
           </CardActions>
