@@ -10,6 +10,8 @@ import useFilter from "../utils/useFilter";
 const JobsSection = () => {
   const [pageIndex, setPageIndex] = useState(0); // for infinte scroll
   const dispatch = useDispatch();
+  const [noMoreJobsAvailable, setNoMoreJobsAvailable] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const headers = new Headers();
@@ -29,11 +31,17 @@ const JobsSection = () => {
 
       const data = await response.json();
 
-      dispatch(
-        updateAllJobs({
-          fetchedJobs: data.jdList,
-        })
-      );
+      if (data.totalCount <= pageIndex) {
+        setNoMoreJobsAvailable(true);
+        setLoading(false);
+      } else {
+        dispatch(
+          updateAllJobs({
+            fetchedJobs: data.jdList,
+          })
+        );
+        setLoading(false);
+      }
     };
 
     fetchJobDetails();
@@ -55,6 +63,8 @@ const JobsSection = () => {
   const handleScroll = () => {
     // to know when scroll has reached bottom of page
     if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+      setLoading(true);
+
       setPageIndex((prevPageIndex) => {
         return prevPageIndex + 1;
       });
@@ -155,6 +165,9 @@ const JobsSection = () => {
       ) : (
         <p>No jobs found</p>
       )}
+      {loading && <p>Fetching more jobs for you.</p>}
+
+      {noMoreJobsAvailable && <p>Reached the end, no more jobs available</p>}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
+import TextField from "@mui/material/TextField";
 
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
@@ -15,7 +16,12 @@ const Filter = () => {
   const [counter, setCounter] = useState(0);
   const [jobRoleFilter, setJobRoleFilter] = useState("");
   const [jobRemoteFilter, setJobRemoteFilter] = useState("");
-  const [jobMinExpFilter, setJobMinExpFilter] = useState(0);
+  const [jobMinExpFilter, setJobMinExpFilter] = useState("");
+  const [jobLocationFilter, setJobLocationFilter] = useState("");
+  const [companyNameFilter, setCompanyNameFilter] = useState("");
+
+  const [jobMinBaseSalaryFilter, setJobMinBaseSalaryFilter] = useState("");
+
   const dispatch = useDispatch();
 
   const allFiltersState = useSelector((allfilters) => {
@@ -130,6 +136,47 @@ const Filter = () => {
     });
   };
 
+  const handleJobLocationChange = (event) => {
+    console.log("handleJobLocationChange", event.target.value);
+    setJobLocationFilter(event.target.value);
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        location:
+          event.target.value.trim().length > 0
+            ? event.target.value.trim()
+            : false,
+      })
+    );
+  };
+
+  const handleCompanyNameChange = () => {
+    console.log("handleCompanyNameChange", event.target.value);
+    setCompanyNameFilter(event.target.value);
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        companyName:
+          event.target.value.trim().length > 0
+            ? event.target.value.trim()
+            : false,
+      })
+    );
+  };
+
+  const handleJobMinBaseSalaryChange = (event) => {
+    console.log("handleJobMinBaseSalaryChange", event.target.value);
+    setJobMinBaseSalaryFilter(event.target.value);
+    dispatch(
+      updateSearchFilter({
+        ...allFiltersState,
+        minBasePay: event.target.value
+          ? event.target.value.split("L")[0]
+          : false,
+      })
+    );
+  };
+
   return (
     <div>
       <Box className={styles["Box"]}>
@@ -163,7 +210,6 @@ const Filter = () => {
             </MenuItem>
             <MenuItem value="remote">Remote</MenuItem>
             <MenuItem value="inoffice">In Office</MenuItem>
-            <MenuItem value="hybrid">Hybrid</MenuItem>
           </Select>
         </FormControl>
 
@@ -188,6 +234,43 @@ const Filter = () => {
             <MenuItem value="9">9</MenuItem>
             <MenuItem value="10">10</MenuItem>
           </Select>
+        </FormControl>
+
+        <FormControl fullWidth>
+          <InputLabel id="minbasesalary">Min Base salary</InputLabel>
+          <Select
+            labelId="minbasesalary"
+            value={jobMinBaseSalaryFilter}
+            onChange={handleJobMinBaseSalaryChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="0L">0L</MenuItem>
+            <MenuItem value="10L">10L</MenuItem>
+            <MenuItem value="20L">20L</MenuItem>
+            <MenuItem value="30L">30L</MenuItem>
+            <MenuItem value="40L">40L</MenuItem>
+            <MenuItem value="50L">50L</MenuItem>
+            <MenuItem value="60L">60L</MenuItem>
+            <MenuItem value="70L">70L</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth>
+          <TextField
+            label="Location"
+            onChange={handleJobLocationChange}
+            value={jobLocationFilter}
+          />
+        </FormControl>
+
+        <FormControl fullWidth>
+          <TextField
+            label="Company Name"
+            onChange={handleCompanyNameChange}
+            value={companyNameFilter}
+          />
         </FormControl>
       </Box>
     </div>

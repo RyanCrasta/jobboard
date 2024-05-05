@@ -1,3 +1,5 @@
 .Box {
   display: flex;
+  margin: 1rem;
+  gap: 2rem;
 }
