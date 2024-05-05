@@ -28,8 +28,6 @@ const JobsSection = () => {
 
       const data = await response.json();
 
-      console.log("pageIndex", pageIndex);
-
       dispatch(
         updateAllJobs({
           fetchedJobs: data.jdList,
@@ -41,7 +39,6 @@ const JobsSection = () => {
   }, [pageIndex]);
 
   const allJobs = useSelector((jobs) => {
-    console.log("confirm", jobs);
     return jobs.job.allJobs;
   });
 

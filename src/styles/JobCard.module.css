@@ -1,0 +1,19 @@
+.jobCardContainer {
+  width: 33%;
+}
+
+.jobCardContainer .cardCtn {
+  background-color: red !important;
+}
+
+@media screen and (max-width: 1500px) {
+  .jobCardContainer {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .jobCardContainer {
+    width: 80%;
+  }
+}

@@ -18,9 +18,7 @@ const jobSlice = createSlice({
   reducers: {
     updateAllJobs: (state, action) => {
       // updating all jobs found array
-      //state.allJobs.push([]); // emptying so that
       state.allJobs.push(...action.payload.fetchedJobs);
-      console.log("action.payload", action.payload);
     },
   },
 });
