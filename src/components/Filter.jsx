@@ -153,6 +153,10 @@ const Filter = () => {
     return allfilters.job.filtersSet;
   });
 
+  const nosOfJobsAvailable = useSelector((jobs) => {
+    return jobs.job.totalAvailableJobs;
+  });
+
   useFilter(true, "filterComponent");
 
   const handleJobLocationChange = (event) => {
@@ -271,18 +275,19 @@ const Filter = () => {
 
   return (
     <div>
+      <h1 className={styles["pageTitle"]}>Job Search {nosOfJobsAvailable}</h1>
+
       <Box className={styles["Box"]}>
         <FormControl className={styles["FormControl"]} fullWidth>
           <Autocomplete
             multiple
             options={statePlaceOfWork}
             getOptionLabel={(option) => option.name}
-            disableCloseOnSelect
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                placeholder="Remote/OnSite"
+                label="Remote/OnSite"
                 sx={{
                   "& .MuiChip-root": {
                     borderRadius: 0,
@@ -308,12 +313,11 @@ const Filter = () => {
           <Autocomplete
             options={stateExp}
             getOptionLabel={(option) => option.name}
-            disableCloseOnSelect
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                placeholder="Min Experience"
+                label="Min Experience"
                 sx={{
                   "& .MuiChip-root": {
                     borderRadius: 0,
@@ -339,12 +343,11 @@ const Filter = () => {
           <Autocomplete
             options={stateBaseMinSalary}
             getOptionLabel={(option) => option.name}
-            disableCloseOnSelect
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                placeholder="Min Base Salary"
+                label="Min Base Pay"
                 sx={{
                   "& .MuiChip-root": {
                     borderRadius: 0,
@@ -376,7 +379,7 @@ const Filter = () => {
 
         <FormControl className={styles["FormControl"]} fullWidth>
           <TextField
-            label="Company Name"
+            label="Search Company Name"
             onChange={handleCompanyNameChange}
             value={companyNameFilter}
           />
@@ -387,12 +390,11 @@ const Filter = () => {
             multiple
             options={stateName}
             getOptionLabel={(option) => option.name}
-            disableCloseOnSelect
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                placeholder="Job roles"
+                label="Job roles"
                 sx={{
                   "& .MuiChip-root": {
                     borderRadius: 0,

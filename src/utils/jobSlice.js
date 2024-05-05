@@ -10,10 +10,10 @@ const jobSlice = createSlice({
       companyName: false,
       location: false,
       remote: false,
-      techStack: false,
       role: false,
       minBasePay: false,
     },
+    totalAvailableJobs: 0,
   },
   reducers: {
     updateAllJobs: (state, action) => {
@@ -21,16 +21,21 @@ const jobSlice = createSlice({
       state.allJobs.push(...action.payload.fetchedJobs);
     },
     updateSearchFilter: (state, action) => {
-      console.log(action.payload);
       state.filtersSet = action.payload;
     },
     updateFilteredJobs: (state, action) => {
-      console.log("updateFilteredJobs", action.payload);
       state.filteredJobs = action.payload.updateFilterArrayResult;
+    },
+    updateNumberOfAvailableJobs: (state, action) => {
+      state.totalAvailableJobs = action.payload.nosOfJobs;
     },
   },
 });
 
-export const { updateAllJobs, updateSearchFilter, updateFilteredJobs } =
-  jobSlice.actions;
+export const {
+  updateAllJobs,
+  updateSearchFilter,
+  updateFilteredJobs,
+  updateNumberOfAvailableJobs,
+} = jobSlice.actions;
 export default jobSlice.reducer;

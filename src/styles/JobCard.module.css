@@ -20,7 +20,7 @@
   background-color: rgb(85, 239, 196);
   width: 100%;
   text-align: center;
-  text-decoration: none;
+  text-decoration: none !important;
   cursor: pointer;
   padding: 1rem 0;
   border-radius: 0.5rem;
