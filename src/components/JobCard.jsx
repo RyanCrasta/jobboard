@@ -44,13 +44,23 @@ const JobCard = ({ jobDetail }) => {
                   )}`
                 : "Job Description will be displayed soon"}
               {jobDetail.jobDetailsFromCompany && !readMore && (
-                <span onClick={() => setReadMore(true)}>Read more...</span>
+                <span
+                  className={styles["readtoggle"]}
+                  onClick={() => setReadMore(true)}
+                >
+                  Read more...
+                </span>
               )}
               {readMore && (
                 <span>{jobDetail.jobDetailsFromCompany.slice(201)}</span>
               )}
               {jobDetail.jobDetailsFromCompany && readMore && (
-                <span onClick={() => setReadMore(false)}>Read less...</span>
+                <span
+                  className={styles["readtoggle"]}
+                  onClick={() => setReadMore(false)}
+                >
+                  Read less...
+                </span>
               )}
             </Typography>
 

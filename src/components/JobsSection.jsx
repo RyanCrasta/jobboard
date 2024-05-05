@@ -16,7 +16,7 @@ const JobsSection = () => {
 
     const body = JSON.stringify({
       limit: 12,
-      offset: 0,
+      offset: pageIndex,
     });
 
     const fetchJobDetails = async () => {
@@ -41,6 +41,21 @@ const JobsSection = () => {
   const allJobs = useSelector((jobs) => {
     return jobs.job.allJobs;
   });
+
+  const handleScroll = () => {
+    // to know when scroll has reached bottom of page
+    if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+      setPageIndex((prevPageIndex) => {
+        return prevPageIndex + 1;
+      });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className={styles["jobsSectionContainer"]}>

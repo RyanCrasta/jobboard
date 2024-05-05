@@ -26,6 +26,12 @@
   border-radius: 0.5rem;
 }
 
+.readtoggle {
+  margin-left: 0.5rem;
+  color: #4943da;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1500px) {
   .jobCardContainer {
     width: 45%;
