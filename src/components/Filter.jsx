@@ -320,7 +320,7 @@ const Filter = () => {
       </Box>
 
       <p className={styles["selfIntro"]}>
-        Clone by{" "}
+        Clone made by{" "}
         <a href="https://www.linkedin.com/in/ryan-crasta/" target="_blank">
           Ryan Crasta
         </a>
