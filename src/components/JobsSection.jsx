@@ -95,12 +95,20 @@ const JobsSection = () => {
   useEffect(() => {
     // when filters are applied, filtered job array is empty and scroll bar
     // is at bottom, scroll event wont trigger
-    // so that's why using wheel event and scrolling user to top
-    console.log("allFilteredJobs", allFilteredJobs);
+    // so that's why using forcefully scrolling user to top
     if (allFilteredJobs.length === 0 && isFilterApplied()) {
       window.scrollTo(0, 0);
+    } else if (
+      !loading &&
+      isFilterApplied() &&
+      allFilteredJobs.length > 0 &&
+      window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight
+    ) {
+      // when filters are applied, filtered job array is not empty and scroll bar
+      // is at bottom, scroll event wont trigger
+      // so that's why using forcefully scrolling user to top
+      window.scrollTo(0, window.scrollY - 5);
     }
-    return () => window.removeEventListener("wheel", handleScroll);
   });
 
   const isFilterApplied = () => {
