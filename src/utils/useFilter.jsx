@@ -63,6 +63,13 @@ const useFilter = () => {
             // eg if from dropdown min exp = 3 then I would also show job posting that has exp
             // requirement from 1-5, since candidate would be eligible for that job opening
             return true;
+          } else if (
+            (jobItem.maxExp === null || jobItem.maxExp === undefined) &&
+            jobItem.minExp &&
+            jobItem.minExp <= +exp
+          ) {
+            // handling case when max exp is null or undefined
+            return true;
           } else {
             return false;
           }
@@ -72,9 +79,10 @@ const useFilter = () => {
     }
 
     // location filter
-    if (allFiltersState.location) {
+    if (allFiltersState.location.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
         if (
+          jobItem.location &&
           jobItem.location
             .toLowerCase()
             .includes(allFiltersState.location.toLowerCase())
@@ -87,9 +95,10 @@ const useFilter = () => {
     }
 
     // company name filter
-    if (allFiltersState.companyName) {
+    if (allFiltersState.companyName.length > 0) {
       const res = updateFilterArrayResult.filter((jobItem) => {
         if (
+          jobItem.companyName &&
           jobItem.companyName
             .toLowerCase()
             .includes(allFiltersState.companyName.toLowerCase())
