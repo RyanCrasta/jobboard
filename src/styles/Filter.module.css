@@ -16,9 +16,22 @@
 
 .pageTitle {
   text-align: center;
-  margin: 1rem 0;
+  margin: 2rem 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 200;
+  font-family: lexend500 !important;
+  position: relative;
+}
+
+.nosOfJobs {
+  background-color: rgb(25, 118, 210);
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 50px;
+  position: absolute;
+  top: -10px;
+  min-width: 2.25rem;
 }
 
 @media screen and (max-width: 1371px) {
@@ -26,6 +39,6 @@
     flex-wrap: wrap;
   }
   .FormControl {
-    max-width: 30rem;
+    max-width: 22rem;
   }
 }

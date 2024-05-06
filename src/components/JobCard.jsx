@@ -1,16 +1,9 @@
-import {
-  CardActions,
-  CardContent,
-  Link,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { CardActions, CardContent, Link, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import { useState } from "react";
 import styles from "../styles/JobCard.module.css";
 
 const JobCard = ({ jobDetail }) => {
-  const matches = useMediaQuery("(max-width:995px)");
   const [readMore, setReadMore] = useState(false);
 
   return (
@@ -19,9 +12,16 @@ const JobCard = ({ jobDetail }) => {
         <Card className={styles["Card"]}>
           <CardContent>
             <Typography className={styles["Typography"]}>
-              {jobDetail.companyName
-                ? `Company Name: ${jobDetail.companyName}`
-                : "Company name will be displayed soon"}
+              {jobDetail.companyName ? (
+                <>
+                  <span>Company Name: </span>
+                  <span className={styles["lexend600light"]}>
+                    {jobDetail.companyName}
+                  </span>
+                </>
+              ) : (
+                "Company name will be displayed soon"
+              )}
             </Typography>
 
             <Typography className={styles["Typography"]}>
@@ -31,18 +31,29 @@ const JobCard = ({ jobDetail }) => {
             </Typography>
 
             <Typography className={styles["Typography"]}>
-              {jobDetail.location
-                ? `Job location: ${jobDetail.location}`
-                : "Job location will displayed soon"}
+              {jobDetail.location ? (
+                <>
+                  <span>Job location: </span>
+                  <span className={styles["lexend500font"]}>
+                    {jobDetail.location}
+                  </span>
+                </>
+              ) : (
+                "Job location will displayed soon"
+              )}
             </Typography>
 
             <Typography className={styles["Typography"]}>
-              {jobDetail.jobDetailsFromCompany
-                ? `Job Description: ${jobDetail.jobDetailsFromCompany.slice(
-                    0,
-                    200
-                  )}`
-                : "Job Description will be displayed soon"}
+              {jobDetail.jobDetailsFromCompany ? (
+                <>
+                  <span className={styles["lexend600dark"]}>
+                    Job Description:{" "}
+                  </span>
+                  <span>{jobDetail.jobDetailsFromCompany.slice(0, 200)}</span>
+                </>
+              ) : (
+                "Job Description will be displayed soon"
+              )}
               {jobDetail.jobDetailsFromCompany && !readMore && (
                 <span
                   className={styles["readtoggle"]}
@@ -65,34 +76,60 @@ const JobCard = ({ jobDetail }) => {
             </Typography>
 
             {jobDetail.minExp && jobDetail.maxExp && (
-              <Typography
-                className={styles["Typography"]}
-              >{`Experience required: ${jobDetail.minExp} - ${jobDetail.maxExp}`}</Typography>
+              <Typography className={styles["Typography"]}>
+                <>
+                  <span className={styles["lexend600light"]}>
+                    Experience required:{" "}
+                  </span>
+                  <span>{`${jobDetail.minExp} - ${jobDetail.maxExp}`}</span>
+                </>
+              </Typography>
             )}
 
             {jobDetail.minExp && !jobDetail.maxExp && (
-              <Typography
-                className={styles["Typography"]}
-              >{`Minimum Experience required: ${jobDetail.minExp}`}</Typography>
+              <Typography className={styles["Typography"]}>
+                <>
+                  <span className={styles["lexend600light"]}>
+                    Minimum Experience required:{" "}
+                  </span>
+                  <span>{jobDetail.minExp}</span>
+                </>
+              </Typography>
             )}
 
             {!jobDetail.minExp && jobDetail.maxExp && (
-              <Typography
-                className={styles["Typography"]}
-              >{`Maximum Experience required: ${jobDetail.maxExp}`}</Typography>
+              <Typography className={styles["Typography"]}>
+                <>
+                  <span className={styles["lexend600light"]}>
+                    Maximum Experience required:{" "}
+                  </span>
+                  <span>{jobDetail.maxExp}</span>
+                </>
+              </Typography>
             )}
 
             {!jobDetail.minExp && !jobDetail.maxExp && (
               <Typography className={styles["Typography"]}>
-                Experience required: Not Applicable
+                <>
+                  <span className={styles["lexend600light"]}>
+                    Experience required:{" "}
+                  </span>
+                  <span>Not Applicable</span>
+                </>
               </Typography>
             )}
           </CardContent>
 
-          <p>{jobDetail.minJdSalary}</p>
+          {/* <p>{jobDetail.minJdSalary}</p> */}
 
           <CardActions>
-            <Link className={styles["Link"]}>Easy Apply</Link>
+            <Link
+              href={jobDetail.jdLink}
+              target="_blank"
+              className={styles["Link"]}
+            >
+              ⚡ Easy Apply
+            </Link>
           </CardActions>
         </Card>
       </div>

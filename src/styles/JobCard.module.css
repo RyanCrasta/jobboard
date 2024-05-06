@@ -2,12 +2,36 @@
   width: 33%;
 }
 
+.Card {
+  scale: 1;
+  transition: scale 0.3s ease;
+}
+
+.Card:hover {
+  scale: 1.01;
+}
+
 .jobCardContainer .cardCtn {
   background-color: red !important;
 }
 
 .Typography {
   padding: 0.5rem 0;
+  font-family: lexend400 !important;
+}
+
+.lexend600light {
+  color: #8b8b8b;
+  font-family: lexend600 !important;
+}
+
+.lexend500font {
+  font-family: lexend500 !important;
+}
+
+.lexend600dark {
+  color: rgba(0, 0, 0, 0.87);
+  font-family: lexend600 !important;
 }
 
 .Card {
@@ -17,6 +41,7 @@
 }
 
 .Link {
+  font-family: lexend500 !important;
   background-color: rgb(85, 239, 196);
   width: 100%;
   text-align: center;
@@ -24,6 +49,7 @@
   cursor: pointer;
   padding: 1rem 0;
   border-radius: 0.5rem;
+  color: #000 !important;
 }
 
 .readtoggle {
@@ -34,13 +60,16 @@
 
 @media screen and (max-width: 1500px) {
   .jobCardContainer {
-    width: 45%;
+    width: 50%;
+  }
+  .Card {
+    margin: 2rem;
   }
 }
 
 @media screen and (max-width: 800px) {
   .jobCardContainer {
-    width: 80%;
+    width: 95%;
   }
 }
 

@@ -292,7 +292,10 @@ const Filter = () => {
 
   return (
     <div>
-      <h1 className={styles["pageTitle"]}>Job Search {nosOfJobsAvailable}</h1>
+      <h1 className={styles["pageTitle"]}>
+        Search jobs{" "}
+        <span className={styles["nosOfJobs"]}>{nosOfJobsAvailable}</span>
+      </h1>
 
       <Box className={styles["Box"]}>
         <FormControl className={styles["FormControl"]} fullWidth>
