@@ -100,8 +100,6 @@ const JobsSection = () => {
       window.scrollTo(0, 0);
     } else if (
       !loading &&
-      isFilterApplied() &&
-      allFilteredJobs.length > 0 &&
       window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight
     ) {
       // when filters are applied, filtered job array is not empty and scroll bar
