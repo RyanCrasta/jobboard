@@ -1,4 +1,4 @@
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import "./App.css";
 import Filter from "./components/Filter";
 import JobsSection from "./components/JobsSection";
