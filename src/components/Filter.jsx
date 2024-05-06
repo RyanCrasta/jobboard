@@ -160,10 +160,10 @@ const Filter = () => {
 
   return (
     <div>
-      <h1 className={styles["pageTitle"]}>
-        Search jobs{" "}
+      <div className={styles["pageTitleCtn"]}>
+        <h1 className={styles["pageTitle"]}>Search jobs </h1>
         <span className={styles["nosOfJobs"]}>{nosOfJobsAvailable}</span>
-      </h1>
+      </div>
 
       <Box className={styles["Box"]}>
         <FormControl className={styles["FormControl"]} fullWidth>
@@ -318,6 +318,13 @@ const Filter = () => {
           />
         </FormControl>
       </Box>
+
+      <p className={styles["selfIntro"]}>
+        Clone by{" "}
+        <a href="https://www.linkedin.com/in/ryan-crasta/" target="_blank">
+          Ryan Crasta
+        </a>
+      </p>
     </div>
   );
 };

@@ -16,11 +16,22 @@
 
 .pageTitle {
   text-align: center;
-  margin: 2rem 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 200;
   font-family: lexend500 !important;
+}
+
+.pageTitleCtn {
   position: relative;
+  left: 50%;
+  width: max-content;
+  /* background-color: red; */
+  transform: translateX(-50%);
+  margin: 2rem 0 1rem 0;
+}
+
+.pageTitleCtn h1 {
+  display: inline;
 }
 
 .nosOfJobs {
@@ -29,9 +40,17 @@
   font-size: 0.75rem;
   padding: 0.5rem;
   border-radius: 50px;
-  position: absolute;
   top: -10px;
   min-width: 2.25rem;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.selfIntro {
+  text-align: center;
+  font-size: 0.8rem;
+  font-family: lexend500 !important;
 }
 
 @media screen and (max-width: 1371px) {
