@@ -79,18 +79,29 @@ const JobsSection = () => {
   const handleScroll = () => {
     // to know when scroll bar has reached bottom of page
     if (window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight) {
-      setLoading(true);
-
       setPageIndex((prevPageIndex) => {
         return prevPageIndex + 1;
       });
+
+      setLoading(true);
     }
   };
 
   useEffect(() => {
-    window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // when filters are applied, filtered job array is empty and scroll bar
+    // is at bottom, scroll event wont trigger
+    // so that's why using wheel event and scrolling user to top
+    console.log("allFilteredJobs", allFilteredJobs);
+    if (allFilteredJobs.length === 0 && isFilterApplied()) {
+      window.scrollTo(0, 0);
+    }
+    return () => window.removeEventListener("wheel", handleScroll);
+  });
 
   const isFilterApplied = () => {
     if (
