@@ -1,0 +1,22 @@
+[
+  {
+    "value": "frontend",
+    "name": "Frontend"
+  },
+  {
+    "value": "ios",
+    "name": "IOS"
+  },
+  {
+    "value": "backend",
+    "name": "Backend"
+  },
+  {
+    "value": "tech lead",
+    "name": "tech lead"
+  },
+  {
+    "value": "android",
+    "name": "Android"
+  }
+]

@@ -81,7 +81,7 @@ const JobCard = ({ jobDetail }) => {
                   <span className={styles["lexend600light"]}>
                     Experience required:{" "}
                   </span>
-                  <span>{`${jobDetail.minExp} - ${jobDetail.maxExp}`}</span>
+                  <span>{`${jobDetail.minExp} - ${jobDetail.maxExp} years`}</span>
                 </>
               </Typography>
             )}
@@ -92,7 +92,9 @@ const JobCard = ({ jobDetail }) => {
                   <span className={styles["lexend600light"]}>
                     Minimum Experience required:{" "}
                   </span>
-                  <span>{jobDetail.minExp}</span>
+                  <span>{`${jobDetail.minExp} ${
+                    jobDetail.minExp <= 1 ? "year" : "years"
+                  }`}</span>
                 </>
               </Typography>
             )}
@@ -103,7 +105,9 @@ const JobCard = ({ jobDetail }) => {
                   <span className={styles["lexend600light"]}>
                     Maximum Experience required:{" "}
                   </span>
-                  <span>{jobDetail.maxExp}</span>
+                  <span>{`${jobDetail.maxExp} ${
+                    jobDetail.maxExp <= 1 ? "year" : "years"
+                  }`}</span>
                 </>
               </Typography>
             )}

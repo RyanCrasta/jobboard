@@ -1,151 +1,33 @@
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
+import { updateSearchFilter } from "../utils/jobSlice";
 import TextField from "@mui/material/TextField";
 import { Autocomplete, Chip } from "@mui/material";
-// import CheckIcon from "@mui/icons-material/Check";
-
 import { Box } from "@mui/system";
 import { useState, useEffect } from "react";
 import useFilter from "../utils/useFilter";
-
 import styles from "../styles/Filter.module.css";
 
+import jobRolesJson from "../../dummydata/jobRoles.json";
+import placeOfWorkJson from "../../dummydata/placeOfWork.json";
+import experiencesJson from "../../dummydata/experiences.json";
+import baseMinimumSalaryJson from "../../dummydata/baseMinSalary.json";
+
 const Filter = () => {
-  const [counter, setCounter] = useState(0);
-  const [jobRoleFilter, setJobRoleFilter] = useState("");
-  const [jobRemoteFilter, setJobRemoteFilter] = useState("");
-  const [jobMinExpFilter, setJobMinExpFilter] = useState("");
   const [jobLocationFilter, setJobLocationFilter] = useState("");
   const [companyNameFilter, setCompanyNameFilter] = useState("");
-
-  const [jobMinBaseSalaryFilter, setJobMinBaseSalaryFilter] = useState("");
-
   const [selectedJobRoles, setSelectedJobRoles] = useState([]);
   const [selectedJobPlaces, setSelectedJobPlaces] = useState([]);
   const [selectedJobExp, setSelectedJobExp] = useState([]);
   const [selectedJobBaseMinSalary, setSelectedJobBaseMinSalary] = useState([]);
 
-  const names = [
-    {
-      value: "frontend",
-      name: "Frontend",
-    },
-    {
-      value: "ios",
-      name: "IOS",
-    },
-    {
-      value: "backend",
-      name: "Backend",
-    },
-    {
-      value: "tech lead",
-      name: "tech lead",
-    },
-    {
-      value: "android",
-      name: "Android",
-    },
-  ];
-
-  const placeOfWork = [
-    {
-      value: "remote",
-      name: "Remote",
-    },
-    {
-      value: "inoffice",
-      name: "In Office",
-    },
-  ];
-
-  const exp = [
-    {
-      value: "1",
-      name: "1",
-    },
-    {
-      value: "2",
-      name: "2",
-    },
-    {
-      value: "3",
-      name: "3",
-    },
-    {
-      value: "4",
-      name: "4",
-    },
-
-    {
-      value: "5",
-      name: "5",
-    },
-    {
-      value: "6",
-      name: "6",
-    },
-    {
-      value: "7",
-      name: "7",
-    },
-    {
-      value: "8",
-      name: "8",
-    },
-    {
-      value: "9",
-      name: "9",
-    },
-    {
-      value: "10",
-      name: "10",
-    },
-  ];
-
-  const baseMinSalary = [
-    {
-      value: "0L",
-      name: "0L",
-    },
-    {
-      value: "10L",
-      name: "10L",
-    },
-    {
-      value: "20L",
-      name: "20L",
-    },
-    {
-      value: "30L",
-      name: "30L",
-    },
-    {
-      value: "40L",
-      name: "40L",
-    },
-    {
-      value: "50L",
-      name: "50L",
-    },
-    {
-      value: "60L",
-      name: "60L",
-    },
-    {
-      value: "70L",
-      name: "70L",
-    },
-  ];
-
-  const [stateName, setStateName] = useState(names);
-  const [statePlaceOfWork, setPlaceOfWork] = useState(placeOfWork);
-  const [stateExp, setStateExp] = useState(exp);
-  const [stateBaseMinSalary, setStateBaseMinSalary] = useState(baseMinSalary);
+  const [stateJobRoles, setStateJobRoles] = useState(jobRolesJson);
+  const [statePlaceOfWork, setPlaceOfWork] = useState(placeOfWorkJson);
+  const [stateExp, setStateExp] = useState(experiencesJson);
+  const [stateBaseMinSalary, setStateBaseMinSalary] = useState(
+    baseMinimumSalaryJson
+  );
 
   const dispatch = useDispatch();
 
@@ -153,28 +35,12 @@ const Filter = () => {
     return allfilters.job.filtersSet;
   });
 
-  const isFilteredApplied = () => {
-    console.log("allFiltersState", allFiltersState);
-    if (
-      allFiltersState.companyName ||
-      allFiltersState.location ||
-      allFiltersState.minBasePay.length > 0 ||
-      allFiltersState.minExp.length > 0 ||
-      allFiltersState.remote.length > 0 ||
-      allFiltersState.role.length > 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const nosOfJobsAvailable = useSelector((jobs) => {
     return jobs.job.totalAvailableJobs;
   });
 
   const handleJobLocationChange = (event) => {
-    console.log("handleJobLocationChange", event.target.value);
+    // update search filter with job location provided
     setJobLocationFilter(event.target.value);
     dispatch(
       updateSearchFilter({
@@ -188,7 +54,7 @@ const Filter = () => {
   };
 
   const handleCompanyNameChange = (event) => {
-    console.log("handleCompanyNameChange", event.target.value);
+    // update search filter with company name provided
     setCompanyNameFilter(event.target.value);
     dispatch(
       updateSearchFilter({
@@ -201,7 +67,8 @@ const Filter = () => {
     );
   };
 
-  const handleMultipleJobRole = (event, valueArray) => {
+  const handleMultipleRolesFilter = (event, valueArray) => {
+    // update search filter with job roles provided
     if (valueArray.length > 0) {
       const newSelectedValues = [];
 
@@ -214,7 +81,8 @@ const Filter = () => {
     }
   };
 
-  const handleMultipleJobPlace = (event, valueArray) => {
+  const handleMultiplePlaceFilter = (event, valueArray) => {
+    // update search filter with job place provided
     if (valueArray.length > 0) {
       const newSelectedValues = [];
 
@@ -227,8 +95,8 @@ const Filter = () => {
     }
   };
 
-  const handleMultipleJobExp = (event, valueArray) => {
-    console.log("handleMultipleJobExp", valueArray);
+  const handleMultipleExperienceFilter = (event, valueArray) => {
+    // update search filter with job experience provided
     if (valueArray && valueArray.value) {
       const newSelectedValues = [];
 
@@ -239,8 +107,8 @@ const Filter = () => {
     }
   };
 
-  const handleMultipleJobBaseMinSalary = (event, valueArray) => {
-    console.log("handleMultipleJobExp", valueArray);
+  const handleMultipleMinBaseSalaryFilter = (event, valueArray) => {
+    // update search filter with base min salary provided
     if (valueArray && valueArray.value) {
       const newSelectedValues = [];
 
@@ -252,7 +120,6 @@ const Filter = () => {
   };
 
   useEffect(() => {
-    console.log("RRRRRRRRRRRRRRRRRRR", selectedJobRoles);
     dispatch(
       updateSearchFilter({
         ...allFiltersState,
@@ -288,7 +155,8 @@ const Filter = () => {
     );
   }, [selectedJobBaseMinSalary]);
 
-  useFilter(allFiltersState, isFilteredApplied());
+  // custom hook for code reusability
+  useFilter();
 
   return (
     <div>
@@ -315,7 +183,7 @@ const Filter = () => {
                 }}
               />
             )}
-            onChange={handleMultipleJobPlace}
+            onChange={handleMultiplePlaceFilter}
             renderOption={(props, option) => {
               return (
                 <li {...props} key={option.name}>
@@ -351,7 +219,7 @@ const Filter = () => {
                 }}
               />
             )}
-            onChange={handleMultipleJobExp}
+            onChange={handleMultipleExperienceFilter}
             renderOption={(props, option, { selected }) => (
               <MenuItem
                 {...props}
@@ -381,7 +249,7 @@ const Filter = () => {
                 }}
               />
             )}
-            onChange={handleMultipleJobBaseMinSalary}
+            onChange={handleMultipleMinBaseSalaryFilter}
             renderOption={(props, option, { selected }) => (
               <MenuItem
                 {...props}
@@ -414,10 +282,9 @@ const Filter = () => {
         <FormControl className={styles["FormControl"]} fullWidth>
           <Autocomplete
             multiple
-            options={stateName}
+            options={stateJobRoles}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => {
-              console.log("JJJJJJJJJJJJJJJJJJ", params);
               return (
                 <TextField
                   {...params}
@@ -431,7 +298,7 @@ const Filter = () => {
                 />
               );
             }}
-            onChange={handleMultipleJobRole}
+            onChange={handleMultipleRolesFilter}
             renderOption={(props, option) => {
               return (
                 <li {...props} key={option.name}>

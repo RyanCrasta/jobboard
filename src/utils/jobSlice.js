@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const jobSlice = createSlice({
   name: "job",
@@ -21,9 +21,11 @@ const jobSlice = createSlice({
       state.allJobs.push(...action.payload.fetchedJobs);
     },
     updateSearchFilter: (state, action) => {
+      // updating search criteria
       state.filtersSet = action.payload;
     },
     updateFilteredJobs: (state, action) => {
+      // updating filtered job array based on search criteria
       state.filteredJobs = action.payload.updateFilterArrayResult;
     },
     updateNumberOfAvailableJobs: (state, action) => {
@@ -38,4 +40,5 @@ export const {
   updateFilteredJobs,
   updateNumberOfAvailableJobs,
 } = jobSlice.actions;
+
 export default jobSlice.reducer;

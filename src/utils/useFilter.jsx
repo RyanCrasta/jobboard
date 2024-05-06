@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateFilteredJobs } from "./jobSlice";
 import { useEffect } from "react";
 
-const useFilter = (allFiltersData, isFilterApplied) => {
+const useFilter = () => {
   const dispatch = useDispatch();
 
   const allJobs = useSelector((jobs) => {
@@ -13,7 +13,7 @@ const useFilter = (allFiltersData, isFilterApplied) => {
     return allfilters.job.filtersSet;
   });
 
-  const commonCode = () => {
+  const filterOutJobs = () => {
     let updateFilterArrayResult = allJobs;
     // role filter
     if (allFiltersState.role.length > 0) {
@@ -109,6 +109,7 @@ const useFilter = (allFiltersData, isFilterApplied) => {
             jobItem.minJdSalary &&
             jobItem.minJdSalary >= +minBaseSalary.split("L")[0]
           ) {
+            // show jobs that offer greater then equal to min base salary selected
             return true;
           } else {
             return false;
@@ -117,6 +118,8 @@ const useFilter = (allFiltersData, isFilterApplied) => {
       });
       updateFilterArrayResult = res;
     }
+
+    // update filtered jobs array based on search criteria
     dispatch(
       updateFilteredJobs({
         updateFilterArrayResult,
@@ -124,11 +127,26 @@ const useFilter = (allFiltersData, isFilterApplied) => {
     );
   };
 
-  useEffect(() => {
-    if (isFilterApplied) {
-      commonCode();
+  const isFilterApplied = () => {
+    if (
+      allFiltersState.companyName.length > 0 ||
+      allFiltersState.location.length > 0 ||
+      allFiltersState.minBasePay.length > 0 ||
+      allFiltersState.minExp.length > 0 ||
+      allFiltersState.remote.length > 0 ||
+      allFiltersState.role.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
     }
-  }, [allJobs, JSON.stringify(allFiltersData)]);
+  };
+
+  useEffect(() => {
+    if (isFilterApplied()) {
+      filterOutJobs();
+    }
+  }, [allJobs, JSON.stringify(allFiltersState)]);
 };
 
 export default useFilter;

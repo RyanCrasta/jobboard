@@ -14,6 +14,7 @@ const JobsSection = () => {
   const [noMoreJobsAvailable, setNoMoreJobsAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [fetchFailed, setFetchFailed] = useState(false);
 
   useEffect(() => {
     const headers = new Headers();
@@ -25,33 +26,39 @@ const JobsSection = () => {
     });
 
     const fetchJobDetails = async () => {
-      const response = await fetch(JOB_SEARCH_URL, {
-        method: "POST",
-        headers,
-        body,
-      });
+      try {
+        const response = await fetch(JOB_SEARCH_URL, {
+          method: "POST",
+          headers,
+          body,
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.totalCount <= pageIndex) {
-        setNoMoreJobsAvailable(true);
-        setLoading(false);
-      } else {
+        if (data.totalCount <= pageIndex) {
+          setNoMoreJobsAvailable(true);
+          setLoading(false);
+        } else {
+          // update fetchedJobs array with jobs that we would showing
+          dispatch(
+            updateAllJobs({
+              fetchedJobs: data.jdList,
+            })
+          );
+          setLoading(false);
+        }
+
         dispatch(
-          updateAllJobs({
-            fetchedJobs: data.jdList,
+          updateNumberOfAvailableJobs({
+            nosOfJobs: data.totalCount,
           })
         );
-        setLoading(false);
+
+        setTotalCount(data.totalCount);
+        setFetchFailed(false);
+      } catch (err) {
+        setFetchFailed(true);
       }
-
-      dispatch(
-        updateNumberOfAvailableJobs({
-          nosOfJobs: data.totalCount,
-        })
-      );
-
-      setTotalCount(data.totalCount);
     };
 
     fetchJobDetails();
@@ -66,13 +73,11 @@ const JobsSection = () => {
   });
 
   const allFiltersState = useSelector((allfilters) => {
-    console.log(allfilters.job.filtersSet);
     return allfilters.job.filtersSet;
   });
 
   const handleScroll = () => {
-    console.log("handleScrollhandleScroll");
-    // to know when scroll has reached bottom of page
+    // to know when scroll bar has reached bottom of page
     if (window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight) {
       setLoading(true);
 
@@ -84,14 +89,13 @@ const JobsSection = () => {
 
   useEffect(() => {
     window.addEventListener("wheel", handleScroll);
-
     return () => window.removeEventListener("wheel", handleScroll);
   }, []);
 
-  const isFilteredApplied = () => {
+  const isFilterApplied = () => {
     if (
-      allFiltersState.companyName ||
-      allFiltersState.location ||
+      allFiltersState.companyName.length > 0 ||
+      allFiltersState.location.length > 0 ||
       allFiltersState.minBasePay.length > 0 ||
       allFiltersState.minExp.length > 0 ||
       allFiltersState.remote.length > 0 ||
@@ -104,7 +108,8 @@ const JobsSection = () => {
   };
 
   useEffect(() => {
-    if (!isFilteredApplied()) {
+    // updating number of jobs shown beside title
+    if (!isFilterApplied()) {
       dispatch(
         updateNumberOfAvailableJobs({
           nosOfJobs: totalCount,
@@ -117,20 +122,15 @@ const JobsSection = () => {
         })
       );
     }
-  }, [allFilteredJobs.length, isFilteredApplied()]);
+  }, [allFilteredJobs.length, isFilterApplied()]);
 
-  console.log(
-    "allFilteredJobsallFilteredJobs",
-    isFilteredApplied(),
-    allFilteredJobs
-  );
-
-  useFilter(allFiltersState, isFilteredApplied());
+  // custom hook for code reusability
+  useFilter();
 
   return (
     <>
       <div className={styles["jobsSectionContainer"]}>
-        {!isFilteredApplied() ? (
+        {!isFilterApplied() ? (
           allJobs &&
           allJobs.map((jobDetail) => {
             // some jobs jdUid key data are same so i used uuid to generate key
@@ -148,13 +148,19 @@ const JobsSection = () => {
         )}
       </div>
 
-      {loading && (
+      {loading && !fetchFailed && (
         <p className={styles["messageWarning"]}>Fetching more jobs for you.</p>
       )}
 
-      {noMoreJobsAvailable && (
+      {noMoreJobsAvailable && !fetchFailed && (
         <p className={styles["messageWarning"]}>
           Reached the end, no more jobs available
+        </p>
+      )}
+
+      {fetchFailed && (
+        <p className={styles["erroMsg"]}>
+          Some error occured, please try again later.
         </p>
       )}
     </>
