@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateFilteredJobs } from "./jobSlice";
 import { useEffect } from "react";
 
-const useFilter = (isFilterApplied, component) => {
+const useFilter = (allFiltersData, isFilterApplied) => {
   const dispatch = useDispatch();
 
   const allJobs = useSelector((jobs) => {
@@ -117,7 +117,6 @@ const useFilter = (isFilterApplied, component) => {
       });
       updateFilterArrayResult = res;
     }
-
     dispatch(
       updateFilteredJobs({
         updateFilterArrayResult,
@@ -125,14 +124,11 @@ const useFilter = (isFilterApplied, component) => {
     );
   };
 
-  if (component === "filterComponent") {
-    commonCode();
-  }
   useEffect(() => {
     if (isFilterApplied) {
       commonCode();
     }
-  }, [allJobs]);
+  }, [allJobs, JSON.stringify(allFiltersData)]);
 };
 
 export default useFilter;

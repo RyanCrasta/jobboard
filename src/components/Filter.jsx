@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSearchFilter, updateFilteredJobs } from "../utils/jobSlice";
 import TextField from "@mui/material/TextField";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Chip } from "@mui/material";
 // import CheckIcon from "@mui/icons-material/Check";
 
 import { Box } from "@mui/system";
@@ -153,11 +153,25 @@ const Filter = () => {
     return allfilters.job.filtersSet;
   });
 
+  const isFilteredApplied = () => {
+    console.log("allFiltersState", allFiltersState);
+    if (
+      allFiltersState.companyName ||
+      allFiltersState.location ||
+      allFiltersState.minBasePay.length > 0 ||
+      allFiltersState.minExp.length > 0 ||
+      allFiltersState.remote.length > 0 ||
+      allFiltersState.role.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const nosOfJobsAvailable = useSelector((jobs) => {
     return jobs.job.totalAvailableJobs;
   });
-
-  useFilter(true, "filterComponent");
 
   const handleJobLocationChange = (event) => {
     console.log("handleJobLocationChange", event.target.value);
@@ -238,6 +252,7 @@ const Filter = () => {
   };
 
   useEffect(() => {
+    console.log("RRRRRRRRRRRRRRRRRRR", selectedJobRoles);
     dispatch(
       updateSearchFilter({
         ...allFiltersState,
@@ -273,6 +288,8 @@ const Filter = () => {
     );
   }, [selectedJobBaseMinSalary]);
 
+  useFilter(allFiltersState, isFilteredApplied());
+
   return (
     <div>
       <h1 className={styles["pageTitle"]}>Job Search {nosOfJobsAvailable}</h1>
@@ -296,16 +313,22 @@ const Filter = () => {
               />
             )}
             onChange={handleMultipleJobPlace}
-            renderOption={(props, option, { selected }) => (
-              <MenuItem
-                {...props}
-                key={option.name}
-                value={option.value}
-                sx={{ justifyContent: "space-between" }}
-              >
-                {option.name}
-              </MenuItem>
-            )}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={option.name}>
+                  {option.name}
+                </li>
+              );
+            }}
+            renderTags={(tagValue, getTagProps) => {
+              return tagValue.map((option, index) => (
+                <Chip
+                  {...getTagProps({ index })}
+                  key={option.name}
+                  label={option.name}
+                />
+              ));
+            }}
           />
         </FormControl>
 
@@ -390,29 +413,38 @@ const Filter = () => {
             multiple
             options={stateName}
             getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Job roles"
-                sx={{
-                  "& .MuiChip-root": {
-                    borderRadius: 0,
-                  },
-                }}
-              />
-            )}
+            renderInput={(params) => {
+              console.log("JJJJJJJJJJJJJJJJJJ", params);
+              return (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Job roles"
+                  sx={{
+                    "& .MuiChip-root": {
+                      borderRadius: 0,
+                    },
+                  }}
+                />
+              );
+            }}
             onChange={handleMultipleJobRole}
-            renderOption={(props, option, { selected }) => (
-              <MenuItem
-                {...props}
-                key={option.name}
-                value={option.value}
-                sx={{ justifyContent: "space-between" }}
-              >
-                {option.name}
-              </MenuItem>
-            )}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={option.name}>
+                  {option.name}
+                </li>
+              );
+            }}
+            renderTags={(tagValue, getTagProps) => {
+              return tagValue.map((option, index) => (
+                <Chip
+                  {...getTagProps({ index })}
+                  key={option.name}
+                  label={option.name}
+                />
+              ));
+            }}
           />
         </FormControl>
       </Box>

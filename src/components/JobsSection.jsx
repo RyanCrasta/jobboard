@@ -6,12 +6,14 @@ import styles from "../styles/JobsSection.module.css";
 import { useState } from "react";
 import JobCard from "./JobCard";
 import useFilter from "../utils/useFilter";
+import { v4 as uuidv4 } from "uuid";
 
 const JobsSection = () => {
   const [pageIndex, setPageIndex] = useState(0); // for infinte scroll
   const dispatch = useDispatch();
   const [noMoreJobsAvailable, setNoMoreJobsAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     const headers = new Headers();
@@ -48,6 +50,8 @@ const JobsSection = () => {
           nosOfJobs: data.totalCount,
         })
       );
+
+      setTotalCount(data.totalCount);
     };
 
     fetchJobDetails();
@@ -86,12 +90,12 @@ const JobsSection = () => {
 
   const isFilteredApplied = () => {
     if (
-      !allFiltersState.companyName &&
-      !allFiltersState.location &&
-      !allFiltersState.minBasePay.length > 0 &&
-      !allFiltersState.minExp.length > 0 &&
-      !allFiltersState.remote.length > 0 &&
-      !allFiltersState.role.length > 0
+      allFiltersState.companyName ||
+      allFiltersState.location ||
+      allFiltersState.minBasePay.length > 0 ||
+      allFiltersState.minExp.length > 0 ||
+      allFiltersState.remote.length > 0 ||
+      allFiltersState.role.length > 0
     ) {
       return true;
     } else {
@@ -99,21 +103,43 @@ const JobsSection = () => {
     }
   };
 
-  console.log("allFilteredJobsallFilteredJobs", allFilteredJobs);
+  useEffect(() => {
+    if (!isFilteredApplied()) {
+      dispatch(
+        updateNumberOfAvailableJobs({
+          nosOfJobs: totalCount,
+        })
+      );
+    } else {
+      dispatch(
+        updateNumberOfAvailableJobs({
+          nosOfJobs: allFilteredJobs.length,
+        })
+      );
+    }
+  }, [allFilteredJobs.length, isFilteredApplied()]);
 
-  useFilter(isFilteredApplied(), "jobsSectionComponent");
+  console.log(
+    "allFilteredJobsallFilteredJobs",
+    isFilteredApplied(),
+    allFilteredJobs
+  );
+
+  useFilter(allFiltersState, isFilteredApplied());
 
   return (
     <>
       <div className={styles["jobsSectionContainer"]}>
-        {isFilteredApplied() ? (
+        {!isFilteredApplied() ? (
           allJobs &&
           allJobs.map((jobDetail) => {
-            return <JobCard jobDetail={jobDetail} />;
+            // some jobs jdUid key data are same so i used uuid to generate key
+            return <JobCard jobDetail={jobDetail} key={uuidv4()} />;
           })
         ) : allFilteredJobs.length > 0 ? (
           allFilteredJobs.map((jobDetail) => {
-            return <JobCard jobDetail={jobDetail} />;
+            // some jobs jdUid key data are same so i used uuid to generate key
+            return <JobCard jobDetail={jobDetail} key={uuidv4()} />;
           })
         ) : (
           <p className={styles["messageWarning"]}>
